@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.antino.entity.Product;
+import com.antino.entity.Customer;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer>{
-	
-	public Page<Product> findAll(Pageable pageable);
-	
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+
+	Page<Customer> findAll(Pageable pageable);
+
 }
