@@ -50,12 +50,18 @@ public class Product {
 	private String productDescription;
 	
 	@NotNull
-	@Column(name="Quantity")
+	@Column(name="ProductQuantity")
 	private Integer quantity;
 	
 	@NotNull(message = "Please provide a price")
     @DecimalMin("1.00")
+	@Column(name="ProductPrice")
     private BigDecimal price;
+	
+	@NotNull
+    @DecimalMin("1.00")
+	@Column(name="ProductGstTax")
+    private BigDecimal gst;
 	
 	@NotEmpty
 	@Column(name="Category")
@@ -114,6 +120,14 @@ public class Product {
 		this.price = price;
 	}
 
+	public BigDecimal getGst() {
+		return gst;
+	}
+
+	public void setGst(BigDecimal gst) {
+		this.gst = gst;
+	}
+
 	public String getCategory() {
 		return category;
 	}
@@ -134,8 +148,8 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + id + ", productId=" + productId + ", productName=" + productName
 				+ ", productDescription=" + productDescription + ", quantity=" + quantity + ", price=" + price
-				+ ", category=" + category + ", createdAt=" + createdAt + "]";
+				+ ", gst=" + gst + ", category=" + category + ", createdAt=" + createdAt + "]";
 	}
+
 	
-	// testing git
 }

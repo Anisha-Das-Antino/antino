@@ -16,7 +16,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 	
-	@GetMapping("/customer/pageNO/{pageNo}/noOfCustomers/{noOfCustomers}")
+	@GetMapping("/customer/pageNo/{pageNo}/noOfCustomers/{noOfCustomers}")
 	public List<Customer> getAllCustomer(@PathVariable int pageNo, @PathVariable int noOfCustomers) {
 		List<Customer> customerList = customerService.getAllCustomer(pageNo,noOfCustomers);
 		
