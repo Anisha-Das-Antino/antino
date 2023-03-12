@@ -11,5 +11,6 @@ public class AntinoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AntinoApplication.class, args);
 	}
-
+	
 }
+

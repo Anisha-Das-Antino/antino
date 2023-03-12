@@ -21,4 +21,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	@Query(value="SELECT t FROM Transaction t WHERE t.customerName = :customerName and t.productName = :productName")
 	List<Transaction> findByCustomerNameAndProductName(@Param("customerName")String customerName, @Param("productName")String productName);
 
+	@Query("select e from Transaction e where year(e.createdAt) = year(current_date) and  month(e.createdAt) = month(current_date)")
+	List<Transaction> getAllOfCurrentMonth();
+	
 }

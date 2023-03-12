@@ -1,7 +1,10 @@
 package com.antino.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,20 @@ public class CustomerService {
 	public List<Customer> getAllCustomers() {
 		// TODO Auto-generated method stub
 		return customerRepository.findAll();
+	}
+
+	public Customer addCustomer(@Valid Customer customer) {
+		
+		System.out.println("Inside Customer Service Package"+customer.toString());
+		customer.setCreatedAt(new Date());
+		
+		return customerRepository.save(customer);
+	}
+
+	public Page<Customer> getCustomerPagination(Integer pageNumber, Integer pageSize) {
+		
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		return customerRepository.findAll(pageable);
 	}
 
 }

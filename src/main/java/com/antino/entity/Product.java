@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,7 +24,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,9 +43,11 @@ public class Product {
 	@Column(name="ProductId")
 	private Integer productId;
 	
-	@NotEmpty(message="Name cannot be null or empty")
-	@Size(min=1,message="*required") 
+//	@ManyToOne()
+//	@JoinColumn(name="productName", referencedColumnName = "productName", insertable = false, updatable = false)
 	@Column(name="ProductName")
+	@Size(min=1,message="*required") 
+	@JoinColumn(name="ProductName")
 	private String productName;
 	
 	@NotEmpty(message = "Please provide description.")
@@ -151,5 +157,4 @@ public class Product {
 				+ ", gst=" + gst + ", category=" + category + ", createdAt=" + createdAt + "]";
 	}
 
-	
 }

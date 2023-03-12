@@ -1,11 +1,12 @@
 package com.antino.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.antino.service.TransactionService;
 import com.antino.util.Response;
 
 @RestController
+@CrossOrigin
 public class TransactionController {
 	
 	@Autowired
@@ -65,6 +67,11 @@ public class TransactionController {
 	@GetMapping("/transactions")
 	public List<Transaction> getAllTransactions(){
 		return transactionService.getAllTransactions();
+	}
+	
+	@GetMapping("/transactions/current-month/sales")
+	public  Map<String,Object> getSaleCurrentMonth(){
+		return transactionService.getSaleCurrentMonth();
 	}
 	
 }

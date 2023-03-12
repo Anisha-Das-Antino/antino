@@ -35,7 +35,6 @@ public class Customer {
 	private Integer id;
 	
 	@NotNull(message="Id cannot be null.") 
-	@Size(message="*required")
 	@Column(name="CustomerId")
 	private Integer customerId;
 	
@@ -125,5 +124,4 @@ public class Customer {
 				+ ", customerEmail=" + customerEmail + ", customerPhone=" + customerPhone + ", customerAddress="
 				+ customerAddress + ", createdAt=" + createdAt + "]";
 	}
-
 }

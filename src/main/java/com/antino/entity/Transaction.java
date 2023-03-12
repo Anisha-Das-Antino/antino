@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,9 +42,12 @@ public class Transaction {
 	@Column(name="CustomerName")
 	private String customerName;
 	
+//	@Lob
+//	@OneToMany(targetEntity=Product.class, mappedBy="productName",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ProductName")
+	@Column(name="ProductName")
 	@NotEmpty(message="Name cannot be null or empty")
 	@Size(min=1,message="*required") 
-	@Column(name="ProductName")
 	private String productName;
 	
 	@NotNull
@@ -53,6 +58,11 @@ public class Transaction {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="Date")
 	private Date createdAt;
+	
+	
+	@Column(name="TotalAmount")
+	@NotNull
+	private Double totalAmount;
 	
 //	@NotNull
 //  @DecimalMin("1.00")
@@ -106,12 +116,24 @@ public class Transaction {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	
+	
+
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "Transaction [id=" + id + ", transactionId=" + transactionId + ", customerName=" + customerName
-				+ ", productName=" + productName + ", quantity=" + quantity + ", createdAt=" + createdAt + "]";
+				+ ", productName=" + productName + ", quantity=" + quantity + ", createdAt=" + createdAt
+				+ ", totalAmount=" + totalAmount + "]";
 	}
-
 	
 }
