@@ -10,17 +10,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.antino.service.UserService;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvcSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -57,6 +60,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
 	}
+	
+//	@Bean(name = "mvcHandlerMappingIntrospector")
+//	   public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
+//	     return new HandlerMappingIntrospector();
+//	   }
 	
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception{

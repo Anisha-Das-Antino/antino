@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.Set;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -19,7 +21,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.antino.dto.DashBoardGraphSaleDTO;
+
 import com.antino.entity.Transaction;
+
 import com.antino.repository.TransactionRepository;
 
 @Service
@@ -31,7 +35,9 @@ public class TransactionService {
 	public Transaction createTransaction(@Valid Transaction transaction) {
 
 		System.out.println("Inside Transaction Service Package" + transaction.toString());
+		UUID uuid = UUID.randomUUID();
 		transaction.setCreatedAt(new Date());
+		transaction.setTransactionId(uuid.toString());
 
 		return transactionRepository.save(transaction);
 	}
@@ -51,6 +57,7 @@ public class TransactionService {
 	public List<Transaction> getAllTransactions() {
 
 		return transactionRepository.findAll();
+		
 	}
 
 	public List<Transaction> getTransactionByCustomerName(String customerName) {
@@ -60,12 +67,16 @@ public class TransactionService {
 	public List<Transaction> getByCustomernameAndProductName(String customerName, String productName) {
 		return transactionRepository.findByCustomerNameAndProductName(customerName, productName);
 	}
-
+	
 	public Map<String,Object> getSaleCurrentMonth() {
 		// TODO Auto-generated method stub
 		List<Transaction> transactions = transactionRepository.getAllOfCurrentMonth();
 		List<DashBoardGraphSaleDTO> listOfDashBoardGraphSaleDTO = new ArrayList<>();
 		Map<Integer, Double> hashMapTotalSale = new HashMap<>();
+		final int totalNoOfDays=31;
+			 for(int i=1;i<=totalNoOfDays;i++) {
+			  	hashMapTotalSale.put(i, 0.0);
+			 }
 		
 		Map<String,Object> response = new HashMap<>();
 

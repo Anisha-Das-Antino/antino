@@ -1,5 +1,7 @@
 package com.antino.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +13,7 @@ import com.antino.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer>{
 	
 	public Page<Product> findAll(Pageable pageable);
+	
+	List<Product> findByProductNameContainingIgnoreCaseAndCategoryContainingIgnoreCase(String productName, String category);
 	
 }

@@ -26,6 +26,7 @@ public class RegisterDTO {
 	private String password;
 	
 	@NonNull
+	@NotEmpty
 	@NotBlank(message = "role is mandatory")
 	private String role;
 	

@@ -1,6 +1,7 @@
 package com.antino.controller;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,11 +120,14 @@ public class HomeController {
 			myUser.setPhoneNumber(register.getPhoneNumber());
 			myUser.setRole(register.getRole());
 			myUser.setUserEmail(register.getUserEmail());
+			myUser.setAddress(register.getAddress());
+			myUser.setCreatedAt(new Date());
 			userRepository.save(myUser);	
 			
 			Response response = new Response();
 			response.setStatusCode(200);
 			response.setMessage("User register successfully");
+			response.setResponse(register);
 			return response;
 		}
 		catch(Exception ex) {
@@ -160,13 +164,57 @@ public class HomeController {
 	}
 	
 	@GetMapping("/totalUser")
-	public List<MyUser> getAllUser(){
-		return userService.getAllUser();
+	public Response getAllUser(){
+		
+		try {
+			
+			List<MyUser> userList = userService.getAllUser();
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("User Details fetched successfully!");
+			response.setResponse(userList); 
+			return response;
+			
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
+		
 	}
 	
 	@RequestMapping(value = "/pagingAndSortingUser/{pageNumber}/{pageSize}", method = RequestMethod.GET)
-    public Page<MyUser> userPagination(@PathVariable Integer pageNumber, @PathVariable Integer pageSize){
-		return userService.getUserPagination(pageNumber, pageSize);
+    public Response userPagination(@PathVariable Integer pageNumber, @PathVariable Integer pageSize){
+		
+		try {
+			
+			Page<MyUser> userList = userService.getUserPagination(pageNumber, pageSize);
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("User Details fetched successfully!");
+			response.setResponse(userList); 
+			return response;
+			
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
+		
 	}
 	
 	@PostMapping("/register/employee")
@@ -187,6 +235,8 @@ public class HomeController {
 			myUser.setPhoneNumber(register.getPhoneNumber());
 			myUser.setRole(register.getRole());
 			myUser.setUserEmail(register.getUserEmail());
+			myUser.setAddress(register.getAddress());
+			myUser.setCreatedAt(new Date());
 			userRepository.save(myUser);	
 			
 			Response response = new Response();

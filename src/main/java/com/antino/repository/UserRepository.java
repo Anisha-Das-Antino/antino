@@ -8,14 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
-import com.antino.entity.Employee;
 import com.antino.entity.MyUser;
 
 @Repository
 public interface UserRepository extends JpaRepository<MyUser, Integer>{
 	
 	@Query("select myuser from MyUser myuser where myuser.userName = :userName")
-	  public MyUser findByUserName(@Param("userName") String userName);
+	public MyUser findByUserName(@Param("userName") String userName);
 
 	public MyUser save(@Valid User user);
 

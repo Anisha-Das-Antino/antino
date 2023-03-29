@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,24 +30,28 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="Product Details")
+@Table(name="Product-Book Details")
 public class Product {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="Id")
 	private Integer id;
 	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@NotNull(message="Id cannot be null.") 
 	@Column(name="ProductId")
 	private Integer productId;
 	
 //	@ManyToOne()
 //	@JoinColumn(name="productName", referencedColumnName = "productName", insertable = false, updatable = false)
-	@Column(name="ProductName")
-	@Size(min=1,message="*required") 
-	@JoinColumn(name="ProductName")
+	@Column(name="ProductName", unique=true)
+	@Size(min=1,message="*required")
 	private String productName;
+	
+	@Size(min=1,message="*required") 
+	@Column(name="Vendor")
+	private String vendor;
 	
 	@NotEmpty(message = "Please provide description.")
 	@Size(min = 10, max = 200, message = "Description must be between 10 and 200 characters")
@@ -77,6 +80,10 @@ public class Product {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="CreatedAt")
 	private Date createdAt;
+	
+	@Size(min=1,message="*required") 
+	@Column(name="Purchase Type")
+	private String purchaseType;
 
 	public Integer getId() {
 		return id;
@@ -100,6 +107,14 @@ public class Product {
 
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+
+	public String getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(String vendor) {
+		this.vendor = vendor;
 	}
 
 	public String getProductDescription() {
@@ -150,11 +165,20 @@ public class Product {
 		this.createdAt = createdAt;
 	}
 
+	public String getPurchaseType() {
+		return purchaseType;
+	}
+
+	public void setPurchaseType(String purchaseType) {
+		this.purchaseType = purchaseType;
+	}
+
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", productId=" + productId + ", productName=" + productName
+		return "Product [id=" + id + ", productId=" + productId + ", productName=" + productName + ", vendor=" + vendor
 				+ ", productDescription=" + productDescription + ", quantity=" + quantity + ", price=" + price
-				+ ", gst=" + gst + ", category=" + category + ", createdAt=" + createdAt + "]";
+				+ ", gst=" + gst + ", category=" + category + ", createdAt=" + createdAt + ", purchaseType="
+				+ purchaseType + "]";
 	}
 
 }

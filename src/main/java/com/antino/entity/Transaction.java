@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,12 +31,12 @@ import lombok.ToString;
 public class Transaction {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="Id")
 	private Integer id;
 	
 	@Column(name="TransactionId")
-	private Integer transactionId;
+	private String transactionId;
 	
 	@NotEmpty(message="Name cannot be null or empty.")
 	@Size(min=1,message="*required") 
@@ -44,7 +45,7 @@ public class Transaction {
 	
 //	@Lob
 //	@OneToMany(targetEntity=Product.class, mappedBy="productName",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ProductName")
+//  @JoinColumn(name = "ProductName")
 	@Column(name="ProductName")
 	@NotEmpty(message="Name cannot be null or empty")
 	@Size(min=1,message="*required") 
@@ -59,15 +60,14 @@ public class Transaction {
 	@Column(name="Date")
 	private Date createdAt;
 	
+	@Size(min=1,message="*required") 
+	@Column(name="PurchaseType")
+	private String purchaseType;
 	
 	@Column(name="TotalAmount")
+	@DecimalMin("1.00")
 	@NotNull
 	private Double totalAmount;
-	
-//	@NotNull
-//  @DecimalMin("1.00")
-//	@Column(name="TotalPrice")
-//  private BigDecimal totalPrice;
 
 	public Integer getId() {
 		return id;
@@ -77,11 +77,11 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public Integer getTransactionId() {
+	public String getTransactionId() {
 		return transactionId;
 	}
 
-	public void setTransactionId(Integer transactionId) {
+	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
 
@@ -116,8 +116,14 @@ public class Transaction {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	
-	
+
+	public String getPurchaseType() {
+		return purchaseType;
+	}
+
+	public void setPurchaseType(String purchaseType) {
+		this.purchaseType = purchaseType;
+	}
 
 	public Double getTotalAmount() {
 		return totalAmount;
@@ -126,14 +132,12 @@ public class Transaction {
 	public void setTotalAmount(Double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		return "Transaction [id=" + id + ", transactionId=" + transactionId + ", customerName=" + customerName
 				+ ", productName=" + productName + ", quantity=" + quantity + ", createdAt=" + createdAt
-				+ ", totalAmount=" + totalAmount + "]";
+				+ ", purchaseType=" + purchaseType + ", totalAmount=" + totalAmount + "]";
 	}
-	
+
 }

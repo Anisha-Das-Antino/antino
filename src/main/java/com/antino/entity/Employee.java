@@ -29,10 +29,11 @@ import lombok.NoArgsConstructor;
 public class Employee {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="Id")
 	private Integer id;
 	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@NotNull(message="Id cannot be null.")
 	@Column(name="EmployeeId")
 	private Integer employeeId;

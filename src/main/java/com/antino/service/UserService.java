@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService{
 
 	public MyUser addUser(@Valid User user) {
 		System.out.println("Inside Employee Service Package"+user.toString());
-		//user.setCreatedAt(new Date());
+		addUser(user).setCreatedAt(new Date());
 		
 		return userRepository.save(user);
 	}

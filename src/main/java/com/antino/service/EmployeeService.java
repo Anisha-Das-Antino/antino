@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.antino.entity.Employee;
+
 import com.antino.repository.EmployeeRepository;
 
 @Service
@@ -32,8 +34,7 @@ public class EmployeeService {
 	}
 
 	public Page<Employee> getEmployeePagination(Integer pageNumber, Integer pageSize) {
-
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, ("createdAt"));
 		return employeeRepository.findAll(pageable);
 		
 	}

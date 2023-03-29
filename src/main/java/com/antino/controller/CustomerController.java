@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +20,6 @@ import com.antino.entity.Customer;
 import com.antino.service.CustomerService;
 import com.antino.util.Response;
 
-@Controller
 @RestController
 @CrossOrigin
 public class CustomerController {
@@ -29,10 +28,27 @@ public class CustomerController {
 	private CustomerService customerService;
 	
 	@GetMapping("/customer/pageNo/{pageNo}/noOfCustomers/{noOfCustomers}")
-	public List<Customer> getAllCustomer(@PathVariable int pageNo, @PathVariable int noOfCustomers) {
-		List<Customer> customerList = customerService.getAllCustomer(pageNo,noOfCustomers);
-		
-		return customerList;
+	public Response getAllCustomer(@PathVariable int pageNo, @PathVariable int noOfCustomers) {
+		try {
+			List<Customer> customerList = customerService.getAllCustomer(pageNo,noOfCustomers);
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Customer details fetched successfully!");
+			response.setResponse(customerList); 
+			return response;
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
+
 	}
 	
 	@PostMapping("/addcustomer")
@@ -43,7 +59,7 @@ public class CustomerController {
 			
 			Response response = new Response();
 			response.setStatusCode(200);
-			response.setMessage("Customer added successfully");
+			response.setMessage("Customer added successfully!");
 			response.setResponse(savedCustomer);
 			return response;
 		}
@@ -59,13 +75,54 @@ public class CustomerController {
 	} 
 
 	@RequestMapping(value = "/pagingAndSortingCustomer/{pageNumber}/{pageSize}", method = RequestMethod.GET)
-    public Page<Customer> customerPagination(@PathVariable Integer pageNumber, @PathVariable Integer pageSize){
-		return customerService.getCustomerPagination(pageNumber, pageSize);
+    public Response customerPagination(@PathVariable Integer pageNumber, @PathVariable Integer pageSize){
+		try {
+			
+			Page<Customer> customerList = customerService.getCustomerPagination(pageNumber, pageSize);
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Customer details fetched successfully!");
+			response.setResponse(customerList); 
+			return response;
+			
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
+		
 	}
 	
 	@GetMapping("/customers")
-	public List<Customer> getAllCustomers(){
-		return customerService.getAllCustomers();
+	public Response getAllCustomers(){
+		try {
+			
+			List<Customer> customerList = customerService.getAllCustomers();
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Customer details fetched successfully!");
+			response.setResponse(customerList); 
+			return response;
+			
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
 	}
 
 }

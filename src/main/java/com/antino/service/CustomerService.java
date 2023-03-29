@@ -3,6 +3,7 @@ package com.antino.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.antino.entity.Customer;
@@ -23,7 +25,7 @@ public class CustomerService {
 	private CustomerRepository customerRepository;
 
 	public List<Customer> getAllCustomer(int pageNo, int noOfCustomers) {
-		Pageable pageable = PageRequest.of(pageNo, noOfCustomers);
+		Pageable pageable = PageRequest.of(pageNo, noOfCustomers, Sort.Direction.DESC, ("createdAt"));
 		Page<Customer>  listOfCustomerPage = customerRepository.findAll(pageable);
 		List<Customer> customers = new ArrayList<Customer>();
 		if(listOfCustomerPage != null && listOfCustomerPage.hasContent()) {
@@ -33,8 +35,9 @@ public class CustomerService {
 	}
 	
 	public List<Customer> getAllCustomers() {
-		// TODO Auto-generated method stub
+		
 		return customerRepository.findAll();
+		
 	}
 
 	public Customer addCustomer(@Valid Customer customer) {
@@ -47,8 +50,13 @@ public class CustomerService {
 
 	public Page<Customer> getCustomerPagination(Integer pageNumber, Integer pageSize) {
 		
-		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, ("createdAt"));
 		return customerRepository.findAll(pageable);
+	}
+
+	public Customer getCustomerById(Integer customerId) {
+		Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        return optionalCustomer.orElse(null);
 	}
 
 }

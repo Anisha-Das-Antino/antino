@@ -51,13 +51,56 @@ public class EmployeeController {
 	}
 	
 	@GetMapping("/totalEmployees")
-	public List<Employee> getAllEmployees(){
-		return employeeService.getAllEmployees();
+	public Response getAllEmployees(){
+		try {
+			
+			List<Employee> employeeList = employeeService.getAllEmployees();
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Employee Details fetched successfully!");
+			response.setResponse(employeeList); 
+			return response;
+			
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
 	}
 	
+	
+	
 	@RequestMapping(value = "/pagingAndSortingEmployee/{pageNumber}/{pageSize}", method = RequestMethod.GET)
-    public Page<Employee> employeePagination(@PathVariable Integer pageNumber, @PathVariable Integer pageSize){
-		return employeeService.getEmployeePagination(pageNumber, pageSize);
+    public Response employeePagination(@PathVariable Integer pageNumber, @PathVariable Integer pageSize){
+		try {
+			
+			Page<Employee> employeeList = employeeService.getEmployeePagination(pageNumber, pageSize);
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Employee Details fetched successfully!");
+			response.setResponse(employeeList); 
+			return response;
+			
+		}
+		catch(Exception ex) {
+			
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+			
+		}
+		
 	}
 
 }

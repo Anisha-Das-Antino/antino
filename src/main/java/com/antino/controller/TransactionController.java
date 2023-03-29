@@ -48,30 +48,118 @@ public class TransactionController {
 	}
 	
 	@GetMapping("/transactions/{customerName}")
-	public List<Transaction> getTransactionByCustomerName(@PathVariable String customerName) {
-		return transactionService.getTransactionByCustomerName(customerName);
+	public Response getTransactionByCustomerName(@PathVariable String customerName) {
+		
+		try {
+			List<Transaction> transactionList = transactionService.getTransactionByCustomerName(customerName);
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Transaction fetched successfully!");
+			response.setResponse(transactionList);
+			return response;
+
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+		}
 	}
 	
 	@GetMapping("transactions/{customerName}/{productName}")
-    public List<Transaction> getByCustomernameAndProductName(@PathVariable("customerName") String customerName, @PathVariable("productName") String productName){
-    return transactionService.getByCustomernameAndProductName(customerName, productName);
+    public Response getByCustomernameAndProductName(@PathVariable("customerName") String customerName, @PathVariable("productName") String productName){
+    
+    try {
+		List<Transaction> transactionList = transactionService.getByCustomernameAndProductName(customerName, productName);
+		
+		Response response = new Response();
+		response.setStatusCode(200);
+		response.setMessage("Transaction fetched successfully!");
+		response.setResponse(transactionList);
+		return response;
+
+	}
+	catch(Exception ex) {
+		ex.printStackTrace();
+		Response response = new Response();
+		response.setStatusCode(500);
+		response.setMessage("Internal Server Error");
+		response.setResponse(null); 
+		return response;
+	}
 }
 	
 	@GetMapping("/transaction/pageNo/{pageNo}/noOfTransactions/{noOfTransactions}/sortBy/{sortBy}")
-	public List<Transaction> getAllTransaction(@PathVariable int pageNo, @PathVariable int noOfTransactions, @PathVariable String sortBy) {
-		List<Transaction> transactionList = transactionService.getAllTransaction(pageNo,noOfTransactions,sortBy);
-		
-		return transactionList;
+	public Response getAllTransaction(@PathVariable int pageNo, @PathVariable int noOfTransactions, @PathVariable String sortBy) {
+		try {
+			List<Transaction> transactionList = transactionService.getAllTransaction(pageNo,noOfTransactions,sortBy);
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Transaction fetched successfully!");
+			response.setResponse(transactionList);
+			return response;
+	
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+		}
 	}
+
 	
 	@GetMapping("/transactions")
-	public List<Transaction> getAllTransactions(){
-		return transactionService.getAllTransactions();
+	public Response getAllTransactions(){
+		
+		try {
+			List<Transaction> transactionList = transactionService.getAllTransactions();
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Transaction fetched successfully!");
+			response.setResponse(transactionList);
+			return response;
+	
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+		}
 	}
 	
 	@GetMapping("/transactions/current-month/sales")
-	public  Map<String,Object> getSaleCurrentMonth(){
-		return transactionService.getSaleCurrentMonth();
+	public Response getSaleCurrentMonth(){
+		
+		try {
+			Map<String,Object> transactionList = transactionService.getSaleCurrentMonth();
+			
+			Response response = new Response();
+			response.setStatusCode(200);
+			response.setMessage("Transaction fetched successfully!");
+			response.setResponse(transactionList);
+			return response;
+	
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+			Response response = new Response();
+			response.setStatusCode(500);
+			response.setMessage("Internal Server Error");
+			response.setResponse(null); 
+			return response;
+		}
 	}
 	
 }
