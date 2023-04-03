@@ -12,7 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.antino.entity.Customer;
 
@@ -55,8 +58,41 @@ public class CustomerService {
 	}
 
 	public Customer getCustomerById(Integer customerId) {
-		Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
-        return optionalCustomer.orElse(null);
+		return customerRepository.findById(customerId)
+                .orElseThrow(() -> new UsernameNotFoundException("Customer not found with id " + customerId));
+	}
+
+	public Customer updateCustomerDetails(Integer customerId, Customer customerUpdateRequest) {
+		Optional<Customer> optionalCustomer = customerRepository.findByCustomerId(customerId);
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            if (customerUpdateRequest.getCustomerName() != null) {
+                customer.setCustomerName(customerUpdateRequest.getCustomerName());
+            }
+            if (customerUpdateRequest.getCustomerAddress() != null) {
+                customer.setCustomerAddress(customerUpdateRequest.getCustomerAddress());
+            }
+            if (customerUpdateRequest.getCustomerEmail() != null) {
+                customer.setCustomerEmail(customerUpdateRequest.getCustomerEmail());
+            }
+            if (customerUpdateRequest.getCustomerPhone() != null) {
+                customer.setCustomerPhone(customerUpdateRequest.getCustomerPhone());
+            }
+            customerRepository.save(customer);
+            return customer;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+	}
+
+	public void deleteCustomer(Integer customerId) {
+		Optional<Customer> optionalCustomer = customerRepository.findByCustomerId(customerId);
+        if (optionalCustomer.isPresent()) {
+            customerRepository.delete(optionalCustomer.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+		
 	}
 
 }

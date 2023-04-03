@@ -9,6 +9,7 @@ public class Request {
     private int quantity;
     private LocalDate issueDate;
     private LocalDate returnDate;
+    private String rentalStatus;
 	public Integer getProductId() {
 		return productId;
 	}
@@ -39,10 +40,16 @@ public class Request {
 	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
 	}
+	public String getRentalStatus() {
+		return rentalStatus;
+	}
+	public void setRentalStatus(String rentalStatus) {
+		this.rentalStatus = rentalStatus;
+	}
 	@Override
 	public String toString() {
 		return "Request [productId=" + productId + ", customerId=" + customerId + ", quantity=" + quantity
-				+ ", issueDate=" + issueDate + ", returnDate=" + returnDate + "]";
+				+ ", issueDate=" + issueDate + ", returnDate=" + returnDate + ", rentalStatus=" + rentalStatus + "]";
 	}
-
+    
 }

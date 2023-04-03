@@ -6,14 +6,19 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.antino.entity.Employee;
 
@@ -102,5 +107,31 @@ public class EmployeeController {
 		}
 		
 	}
+	
+	@PutMapping("employees/{employeeId}")
+    public ResponseEntity<Employee> updateEmployeeDetails(@PathVariable Integer employeeId,
+                                                           @RequestBody Employee employeeUpdateRequest) {
+        try {
+            Employee employee = employeeService.updateEmployeeDetails(employeeId, employeeUpdateRequest);
+            return ResponseEntity.ok(employee);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
+
+	@DeleteMapping("/employees/{employeeId}")
+	public ResponseEntity<String> deleteCustomer (@PathVariable Integer employeeId) {
+		try {
+            employeeService.deleteEmployee(employeeId);
+            return ResponseEntity.ok("Employee with ID " + employeeId + " deleted successfully");
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
+
 
 }

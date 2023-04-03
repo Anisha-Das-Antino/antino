@@ -4,21 +4,22 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@ToString
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,12 +51,14 @@ public class Rental {
     @Column(name = "RentalStatus")
     private String rentalStatus;
     
-    @ManyToOne(fetch = FetchType.LAZY,optional=false)
-    @JoinColumn(name = "ProductId", referencedColumnName = "ProductId",insertable=false, updatable=false)
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "ProductId",insertable=false, updatable=false)
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional=false)
-    @JoinColumn(name = "CustomerId", referencedColumnName = "CustomerId",insertable=false, updatable=false)
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "CustomerId",insertable=false, updatable=false)
     private Customer customer;
 
 	public Integer getRentalId() {
@@ -106,6 +109,14 @@ public class Rental {
 		this.returnDate = returnDate;
 	}
 
+	public String getRentalStatus() {
+		return rentalStatus;
+	}
+
+	public void setRentalStatus(String rentalStatus) {
+		this.rentalStatus = rentalStatus;
+	}
+
 	public Product getProduct() {
 		return product;
 	}
@@ -120,14 +131,6 @@ public class Rental {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	}
-
-	public String getRentalStatus() {
-		return rentalStatus;
-	}
-
-	public void setRentalStatus(String rentalStatus) {
-		this.rentalStatus = rentalStatus;
 	}
 
 	@Override

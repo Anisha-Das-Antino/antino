@@ -1,5 +1,6 @@
 package com.antino.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -31,8 +32,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @Table(name="Product-Book Details")
-public class Product {
-	
+public class Product implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="Id")

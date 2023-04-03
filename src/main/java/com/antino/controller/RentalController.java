@@ -1,11 +1,15 @@
 package com.antino.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.antino.entity.Rental;
@@ -17,6 +21,7 @@ import com.antino.util.Response;
 @RequestMapping("/rentals")
 public class RentalController {
 
+	@Autowired
     private final RentalService rentalService;
 
     public RentalController(RentalService rentalService) {
@@ -24,10 +29,10 @@ public class RentalController {
     }
 
     @PostMapping
-    public Response createRental(@RequestBody Request rentalRequest) {
+    public Response createRental(@Valid @RequestBody Request rentalRequest) {
         
         try {
-        	Rental rental = rentalService.createRental(rentalRequest.getProductId(), rentalRequest.getCustomerId(), rentalRequest.getQuantity(), rentalRequest.getIssueDate(), rentalRequest.getReturnDate());
+        	Rental rental = rentalService.createRental(rentalRequest.getProductId(), rentalRequest.getCustomerId(), rentalRequest.getQuantity(), rentalRequest.getIssueDate(), rentalRequest.getReturnDate(), rentalRequest.getRentalStatus());
 
 			Response response = new Response();
 			response.setStatusCode(200);
@@ -44,15 +49,16 @@ public class RentalController {
 			return response;
 		}
     }
-
+    
     @GetMapping("/{rentalId}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Integer rentalId) {
+    @ResponseBody
+    public ResponseEntity<Rental> getRentalById(@PathVariable ("rentalId") Integer rentalId) {
         Rental rental = rentalService.getRentalById(rentalId);
         if (rental == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(rental);
     }
-
+    
 }
 

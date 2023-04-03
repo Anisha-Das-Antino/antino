@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class MyUser {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name="Id")
 	private int id;
 	
@@ -132,7 +132,5 @@ public class MyUser {
 				+ ", address=" + address + ", phoneNumber=" + phoneNumber + ", userEmail=" + userEmail + ", createdAt="
 				+ createdAt + "]";
 	}
-
-	
 
 }

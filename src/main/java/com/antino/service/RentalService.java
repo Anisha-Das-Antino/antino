@@ -1,7 +1,6 @@
 package com.antino.service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class RentalService {
         this.customerService = customerService;
     }
 
-    public Rental createRental(Integer productId, Integer customerId, int quantity, LocalDate issueDate, LocalDate returnDate) {
+    public Rental createRental(Integer productId, Integer customerId, int quantity, LocalDate issueDate, LocalDate returnDate, String rentalStatus) {
         Product product = productService.getProductById(productId);
         Customer customer = customerService.getCustomerById(customerId);
 
@@ -39,6 +38,7 @@ public class RentalService {
         rental.setQuantity(quantity);
         rental.setIssueDate(issueDate);
         rental.setReturnDate(returnDate);
+		rental.setRentalStatus(rentalStatus);
         rental.setProduct(product);
         rental.setCustomer(customer);
       
@@ -46,8 +46,7 @@ public class RentalService {
     }
 
     public Rental getRentalById(Integer rentalId) {
-        Optional<Rental> optionalRental = rentalRepository.findById(rentalId);
-        return optionalRental.orElse(null);
+    	return rentalRepository.findById(rentalId).orElse(null);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.antino.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,5 +22,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	Customer findByCustomerName(String customerName);
 
 	Page<Customer> findAll(Pageable pageable);
+
+	public Optional<Customer> findByCustomerId(Integer customerId);
+
+	public void deleteByCustomerId(Integer customerId);
 
 }
