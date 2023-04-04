@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,6 +59,27 @@ public class RentalController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(rental);
+    }
+    
+    @PutMapping("/approve")
+    public Response approveRental(@RequestBody Request request) {
+        try {
+            Rental rental = rentalService.approveRental(request.getRentalId(), request.getRentalStatus());
+
+            Response response = new Response();
+            response.setStatusCode(200);
+            response.setMessage("Rental status approved successfully");
+            response.setResponse(rental);
+            return response;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Response response = new Response();
+            response.setStatusCode(500);
+            response.setMessage("Internal Server Error");
+            response.setResponse(null);
+            return response;
+        }
     }
     
 }

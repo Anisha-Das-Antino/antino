@@ -5,13 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.antino.entity.Product;
 import com.antino.repository.ProductRepository;
@@ -61,17 +61,17 @@ public class ProductService {
         return productRepository.save(product);
 	}
 
-	public Product updateProductQuantity(Integer productId, int quantity) {
-		Optional<Product> productOptional = productRepository.findById(productId);
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            int newQuantity = product.getQuantity() + quantity;
-            product.setQuantity(newQuantity);
-            return productRepository.save(product);
-        } else {
-            throw new EntityNotFoundException("Product not found with ID: " + productId);
-        }
-	}
+//	public Product updateProductQuantity(Integer productId, int quantity) {
+//		Optional<Product> productOptional = productRepository.findById(productId);
+//        if (productOptional.isPresent()) {
+//            Product product = productOptional.get();
+//            int newQuantity = product.getQuantity() + quantity;
+//            product.setQuantity(newQuantity);
+//            return productRepository.save(product);
+//        } else {
+//            throw new EntityNotFoundException("Product not found with ID: " + productId);
+//        }
+//	}
 	
 	public List<Product> searchProduct(String productName, String category) {
         return productRepository.findByProductNameContainingIgnoreCaseAndCategoryContainingIgnoreCase(productName, category);
@@ -104,5 +104,48 @@ public class ProductService {
 	public Product getProductById(Integer productId) {
 		Optional<Product> productOptional = productRepository.findById(productId);
         return productOptional.orElse(null);
+	}
+
+	public Product updateProductDetails(Integer productId, Product productUpdateRequest) {
+		Optional<Product> optionalProduct = productRepository.findByProductId(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            if (productUpdateRequest.getProductName() != null) {
+                product.setProductName(productUpdateRequest.getProductName());
+            }
+            if (productUpdateRequest.getProductDescription() != null) {
+                product.setProductDescription(productUpdateRequest.getProductDescription());
+            }
+            if (productUpdateRequest.getCategory() != null) {
+                product.setCategory(productUpdateRequest.getCategory());
+            }
+            if (productUpdateRequest.getPrice() != null) {
+                product.setPrice(productUpdateRequest.getPrice());
+            }
+            if (productUpdateRequest.getGst() != null) {
+                product.setGst(productUpdateRequest.getGst());
+            }
+            if (productUpdateRequest.getVendor() != null) {
+                product.setVendor(productUpdateRequest.getVendor());
+            }
+            if (productUpdateRequest.getPurchaseType() != null) {
+                product.setPurchaseType(productUpdateRequest.getPurchaseType());
+            }
+            
+            productRepository.save(product);
+            return product;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+	}
+
+	public void deleteProduct(Integer productId) {
+		Optional<Product> optionalProduct = productRepository.findByProductId(productId);
+        if (optionalProduct.isPresent()) {
+            productRepository.delete(optionalProduct.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+		
 	}
 }

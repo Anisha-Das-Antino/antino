@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.antino.entity.Customer;
 import com.antino.entity.Product;
 import com.antino.service.ProductService;
 import com.antino.util.Response;
@@ -145,29 +144,29 @@ public class ProductController {
 		}
 	}
 	
-	@PutMapping("/products/{productId}")
-    public Response updateProductQuantity(@PathVariable Integer productId, @RequestParam int quantity) {
-        
-        try {
-			Product productQuantity = productService.updateProductQuantity(productId, quantity);
-			
-			Response response = new Response();
-			response.setStatusCode(200);
-			response.setMessage("Product details fetched successfully!");
-			response.setResponse(productQuantity);
-			return response;
-
-		} catch (Exception ex) {
-
-			ex.printStackTrace();
-			Response response = new Response();
-			response.setStatusCode(500);
-			response.setMessage("Internal Server Error");
-			response.setResponse(null);
-			return response;
-
-		}
-    }
+//	@PutMapping("/products/{productId}")
+//    public Response updateProductQuantity(@PathVariable Integer productId, @RequestParam int quantity) {
+//        
+//        try {
+//			Product productQuantity = productService.updateProductQuantity(productId, quantity);
+//			
+//			Response response = new Response();
+//			response.setStatusCode(200);
+//			response.setMessage("Product details fetched successfully!");
+//			response.setResponse(productQuantity);
+//			return response;
+//
+//		} catch (Exception ex) {
+//
+//			ex.printStackTrace();
+//			Response response = new Response();
+//			response.setStatusCode(500);
+//			response.setMessage("Internal Server Error");
+//			response.setResponse(null);
+//			return response;
+//
+//		}
+//    }
 	
 	@GetMapping("/products/search")
     public Response searchBooks(@RequestParam(required = false) String productName, @RequestParam(required = false) String category) {
@@ -246,30 +245,30 @@ public class ProductController {
 //		return ((PostService) postService).getPostById(id);
 //	}
 	
-//	@PutMapping("products/{productId}")
-//    public ResponseEntity<Product> updateProductDetails(@PathVariable Integer productId,
-//                                                           @RequestBody Product productUpdateRequest) {
-//        try {
-//            Product product = productService.updateProductDetails(productId, productUpdateRequest);
-//            return ResponseEntity.ok(customer);
-//        } catch (ResponseStatusException e) {
-//            throw e;
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
-//        }
-//    }
-//
-//	@DeleteMapping("/customers/{customerId}")
-//	public ResponseEntity<String> deleteCustomer (@PathVariable Integer customerId) {
-//		try {
-//            customerService.deleteCustomer(customerId);
-//            return ResponseEntity.ok("Customer with ID " + customerId + " deleted successfully");
-//        } catch (ResponseStatusException e) {
-//            throw e;
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
-//        }
-//    }
+	@PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProductDetails(@PathVariable Integer productId,
+                                                           @RequestBody Product productUpdateRequest) {
+        try {
+            Product product = productService.updateProductDetails(productId, productUpdateRequest);
+            return ResponseEntity.ok(product);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
+
+	@DeleteMapping("/products/{productId}")
+	public ResponseEntity<String> deleteProduct (@PathVariable Integer productId) {
+		try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.ok("Product with ID " + productId + " deleted successfully");
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
 
 
 }

@@ -3,6 +3,7 @@ package com.antino.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -10,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.antino.entity.MyUser;
 import com.antino.repository.UserRepository;
@@ -63,6 +66,41 @@ public class UserService implements UserDetailsService{
 		
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		return userRepository.findAll(pageable);
+	}
+
+	public MyUser updateUserDetails(Integer id, MyUser userUpdateRequest) {
+		Optional<MyUser> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            MyUser user = optionalUser.get();
+            if (userUpdateRequest.getUserName() != null) {
+                user.setUserName(userUpdateRequest.getUserName());
+            }
+            if (userUpdateRequest.getPassword() != null) {
+                user.setPassword(userUpdateRequest.getPassword());
+            }
+            if (userUpdateRequest.getAddress() != null) {
+                user.setAddress(userUpdateRequest.getAddress());
+            }
+            if (userUpdateRequest.getUserEmail() != null) {
+            	user.setUserEmail(userUpdateRequest.getUserEmail());
+            }
+            if (userUpdateRequest.getPhoneNumber() != null) {
+            	user.setPhoneNumber(userUpdateRequest.getPhoneNumber());
+            }
+            userRepository.save(user);
+            return user;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+	}
+
+	public void deleteUser(Integer id) {
+		Optional<MyUser> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.delete(optionalUser.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
 	}
 
 }

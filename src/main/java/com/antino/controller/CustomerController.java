@@ -128,7 +128,7 @@ public class CustomerController {
 		}
 	}
 	
-	@PutMapping("customers/{customerId}")
+	@PutMapping("/customers/{customerId}")
     public ResponseEntity<Customer> updateCustomerDetails(@PathVariable Integer customerId,
                                                            @RequestBody Customer customerUpdateRequest) {
         try {

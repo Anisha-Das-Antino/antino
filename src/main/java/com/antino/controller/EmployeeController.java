@@ -108,7 +108,7 @@ public class EmployeeController {
 		
 	}
 	
-	@PutMapping("employees/{employeeId}")
+	@PutMapping("/employees/{employeeId}")
     public ResponseEntity<Employee> updateEmployeeDetails(@PathVariable Integer employeeId,
                                                            @RequestBody Employee employeeUpdateRequest) {
         try {
@@ -132,6 +132,4 @@ public class EmployeeController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
         }
     }
-
-
 }

@@ -10,6 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
@@ -17,13 +19,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.antino.dto.LoginDTO;
 import com.antino.dto.RegisterDTO;
@@ -293,5 +298,30 @@ public class HomeController {
 			return response;
 		}
 	}
+	
+	@PutMapping("/users/{id}")
+    public ResponseEntity<MyUser> updateCustomerDetails(@PathVariable Integer id,
+                                                           @RequestBody MyUser userUpdateRequest) {
+        try {
+            MyUser user = userService.updateUserDetails(id, userUpdateRequest);
+            return ResponseEntity.ok(user);
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
+
+	@DeleteMapping("/users/{id}")
+	public ResponseEntity<String> deleteUser (@PathVariable Integer id) {
+		try {
+            userService.deleteUser(id);
+            return ResponseEntity.ok("User with ID " + id + " deleted successfully");
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error", e);
+        }
+    }
 
 }

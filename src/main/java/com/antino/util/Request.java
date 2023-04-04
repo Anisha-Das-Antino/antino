@@ -10,6 +10,12 @@ public class Request {
     private LocalDate issueDate;
     private LocalDate returnDate;
     private String rentalStatus;
+    private Integer rentalId;
+    public enum RentalStatus {
+	    PENDING,
+	    APPROVED,
+	    REJECTED
+	}
 	public Integer getProductId() {
 		return productId;
 	}
@@ -46,10 +52,18 @@ public class Request {
 	public void setRentalStatus(String rentalStatus) {
 		this.rentalStatus = rentalStatus;
 	}
+	
+	public Integer getRentalId() {
+		return rentalId;
+	}
+	public void setRentalId(Integer rentalId) {
+		this.rentalId = rentalId;
+	}
 	@Override
 	public String toString() {
 		return "Request [productId=" + productId + ", customerId=" + customerId + ", quantity=" + quantity
-				+ ", issueDate=" + issueDate + ", returnDate=" + returnDate + ", rentalStatus=" + rentalStatus + "]";
+				+ ", issueDate=" + issueDate + ", returnDate=" + returnDate + ", rentalStatus=" + rentalStatus
+				+ ", rentalId=" + rentalId + "]";
 	}
     
 }
