@@ -1,5 +1,6 @@
 package com.antino.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,7 @@ import com.antino.entity.Rental;
 public interface RentalRepository extends JpaRepository<Rental, Integer> {
 	
 	Optional<Rental> findById(Integer rentalId);
+
+	List<Rental> findByUserId(Integer userId);
 
 }

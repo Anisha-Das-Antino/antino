@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -55,11 +54,6 @@ public class CustomerService {
 		
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, ("createdAt"));
 		return customerRepository.findAll(pageable);
-	}
-
-	public Customer getCustomerById(Integer customerId) {
-		return customerRepository.findById(customerId)
-                .orElseThrow(() -> new UsernameNotFoundException("Customer not found with id " + customerId));
 	}
 
 	public Customer updateCustomerDetails(Integer customerId, Customer customerUpdateRequest) {

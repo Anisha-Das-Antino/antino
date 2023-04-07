@@ -1,12 +1,13 @@
 package com.antino.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.antino.entity.Customer;
+import com.antino.entity.MyUser;
 import com.antino.entity.Product;
 import com.antino.entity.Rental;
 import com.antino.repository.ProductRepository;
@@ -23,31 +24,31 @@ public class RentalService {
     private final ProductService productService;
 	
 	@Autowired
-    private final CustomerService customerService;
+    private final UserService userService;
 	
 	@Autowired
 	private final ProductRepository productRepository;
 
-    public RentalService(RentalRepository rentalRepository, ProductService productService, CustomerService customerService, ProductRepository productRepository) {
+    public RentalService(RentalRepository rentalRepository, ProductService productService, UserService userService, ProductRepository productRepository) {
         this.rentalRepository = rentalRepository;
         this.productService = productService;
-        this.customerService = customerService;
+        this.userService = userService;
         this.productRepository = productRepository;
     }
 
-    public Rental createRental(Integer productId, Integer customerId, int quantity, LocalDate issueDate, LocalDate returnDate, String rentalStatus) {
+    public Rental createRental(Integer productId, Integer userId, int quantity, LocalDate issueDate, LocalDate returnDate, String rentalStatus) {
         Product product = productService.getProductById(productId);
-        Customer customer = customerService.getCustomerById(customerId);
+        MyUser user = userService.getUserById(userId);
 
         Rental rental = new Rental();
         rental.setProductId(productId);
-        rental.setCustomerId(customerId);
+        rental.setUserId(userId);
         rental.setQuantity(quantity);
         rental.setIssueDate(issueDate);
         rental.setReturnDate(returnDate);
 		rental.setRentalStatus(rentalStatus);
         rental.setProduct(product);
-        rental.setCustomer(customer);
+        rental.setMyUser(user);
       
         return rentalRepository.save(rental);
     }
@@ -75,6 +76,16 @@ public class RentalService {
         rental.setRentalStatus(rentalStatus);
         return rentalRepository.save(rental);
     }
+
+	public List<Rental> getAllRentals() {
+		return rentalRepository.findAll();
+	}
+
+	public List<Rental> getRentalsById(Integer userId) {
+		
+		return rentalRepository.findByUserId(userId);
+		
+	}
 
 
 }

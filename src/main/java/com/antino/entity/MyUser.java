@@ -32,7 +32,7 @@ public class MyUser {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name="Id")
-	private int id;
+	private Integer id;
 	
 	@NotEmpty(message="Name cannot be null or empty.")
 	@Size(min=1,message="*required") 
@@ -61,14 +61,13 @@ public class MyUser {
 	@Column(name="CreatedAt")
 	private Date createdAt;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-
 
 	public String getUserName() {
 		return userName;

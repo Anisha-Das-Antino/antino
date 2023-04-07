@@ -35,8 +35,8 @@ public class Rental {
     @Column(name = "ProductId")
     private Integer productId;
     
-    @Column(name = "CustomerId")
-    private Integer customerId;
+    @Column(name = "UserId")
+    private Integer userId;
     
     @NotNull
 	@Column(name="ProductQuantity")
@@ -58,8 +58,8 @@ public class Rental {
 
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "CustomerId",insertable=false, updatable=false)
-    private Customer customer;
+    @JoinColumn(name = "Id",insertable=false, updatable=false)
+    private MyUser myUser;
 
 	public Integer getRentalId() {
 		return rentalId;
@@ -77,12 +77,12 @@ public class Rental {
 		this.productId = productId;
 	}
 
-	public Integer getCustomerId() {
-		return customerId;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setCustomerId(Integer customerId) {
-		this.customerId = customerId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public int getQuantity() {
@@ -125,19 +125,19 @@ public class Rental {
 		this.product = product;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public MyUser getMyUser() {
+		return myUser;
 	}
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setMyUser(MyUser myUser) {
+		this.myUser = myUser;
 	}
 
 	@Override
 	public String toString() {
-		return "Rental [rentalId=" + rentalId + ", productId=" + productId + ", customerId=" + customerId
-				+ ", quantity=" + quantity + ", issueDate=" + issueDate + ", returnDate=" + returnDate
-				+ ", rentalStatus=" + rentalStatus + ", product=" + product + ", customer=" + customer + "]";
+		return "Rental [rentalId=" + rentalId + ", productId=" + productId + ", userId=" + userId + ", quantity="
+				+ quantity + ", issueDate=" + issueDate + ", returnDate=" + returnDate + ", rentalStatus="
+				+ rentalStatus + ", product=" + product + ", myUser=" + myUser + "]";
 	}
-
+	
 }

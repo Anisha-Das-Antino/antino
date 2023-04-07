@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.server.ResponseStatusException;
 
 import com.antino.entity.MyUser;
@@ -101,6 +102,11 @@ public class UserService implements UserDetailsService{
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
+	}
+
+	public MyUser getUserById(Integer userId) {
+		return userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Customer not found with id " + userId));
 	}
 
 }

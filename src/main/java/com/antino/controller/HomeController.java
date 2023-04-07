@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,6 +84,7 @@ public class HomeController {
 			final String token = jwtUtil.generateToken(userDetails);
 			
 			Map<String,String> hpToken = new HashMap<String,String>();
+			hpToken.put("id", String.valueOf(user.getId()));
 			hpToken.put("token", token);
 			hpToken.put("userName", user.getUserName());
 			hpToken.put("role", user.getRole());
@@ -105,6 +107,7 @@ public class HomeController {
 
 		
 	}
+	
 	@PostMapping("/register")
 	public Response register(@RequestBody RegisterDTO register) {
 		System.out.println("Register Data to be Saved"+register.toString());
@@ -116,10 +119,18 @@ public class HomeController {
 //			if(myUserEmail!=null || myUserName != null) {
 //				throw new Exception("User already exist");
 //			}
-			MyUser myUserRole = userRepository.findByRole(register.getRole());
-			if(myUserRole!=null) {
-				throw new Exception("User Owner already exist");
-			}
+//			MyUser myUserRole = userRepository.findByRole(register.getRole());
+//			if(myUserRole!=null) {
+//				throw new Exception("User Owner already exist");
+//			}
+			
+			MyUser myUserRole = userRepository.findByRole("O");
+	        if(myUserRole == null) {
+	            register.setRole("O");
+	        } else {
+	            register.setRole("U");
+	        }
+			
 			MyUser myUser = new MyUser();
 			myUser.setUserName(register.getUserName());
 			myUser.setPassword(passwordEncoder.encode(register.getPassword()));
@@ -128,12 +139,15 @@ public class HomeController {
 			myUser.setUserEmail(register.getUserEmail());
 			myUser.setAddress(register.getAddress());
 			myUser.setCreatedAt(new Date());
-			userRepository.save(myUser);	
+			MyUser presistUser = userRepository.save(myUser);	
 			
 			Response response = new Response();
 			response.setStatusCode(200);
 			response.setMessage("User register successfully");
-			response.setResponse(register);
+			Map<String,Integer> mapresponse= new HashMap<>();
+			mapresponse.put("Id",presistUser.getId());
+			response.setResponse(mapresponse);
+//			response.setResponse(register);
 			return response;
 		}
 		catch(Exception ex) {
@@ -244,44 +258,6 @@ public class HomeController {
 			myUser.setAddress(register.getAddress());
 			myUser.setCreatedAt(new Date());
 			userRepository.save(myUser);
-			
-			Response response = new Response();
-			response.setStatusCode(200);
-			response.setMessage("User register successfully");
-			response.setResponse(register);
-			return response;
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-			Response response = new Response();
-			response.setStatusCode(500);
-			response.setMessage(ex.getMessage());
-			response.setResponse(null); 
-			return response;
-		}
-	}
-	
-	@PostMapping("/register/user")
-	public Response registerUser(@RequestBody RegisterDTO register) {
-		System.out.println("Register Data to be Saved"+register.toString());
-		
-		try {
-			
-			MyUser myUserEmail = userRepository.findByUserEmail(register.getUserEmail());
-			MyUser myUserName = userRepository.findByUserName(register.getUserName());
-			if(myUserEmail!=null || myUserName != null) {
-				throw new Exception("User already exist");
-			}
-			
-			MyUser myUser = new MyUser();
-			myUser.setUserName(register.getUserName());
-			myUser.setPassword(passwordEncoder.encode(register.getPassword()));
-			myUser.setPhoneNumber(register.getPhoneNumber());
-			myUser.setRole("U");
-			myUser.setUserEmail(register.getUserEmail());
-			myUser.setAddress(register.getAddress());
-			myUser.setCreatedAt(new Date());
-			userRepository.save(myUser);	
 			
 			Response response = new Response();
 			response.setStatusCode(200);

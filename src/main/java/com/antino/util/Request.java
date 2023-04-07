@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Request {
 	
 	private Integer productId;
-    private Integer customerId;
+    private Integer userId;
     private int quantity;
     private LocalDate issueDate;
     private LocalDate returnDate;
@@ -22,11 +22,11 @@ public class Request {
 	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
-	public Integer getCustomerId() {
-		return customerId;
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setCustomerId(Integer customerId) {
-		this.customerId = customerId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 	public int getQuantity() {
 		return quantity;
@@ -61,9 +61,9 @@ public class Request {
 	}
 	@Override
 	public String toString() {
-		return "Request [productId=" + productId + ", customerId=" + customerId + ", quantity=" + quantity
-				+ ", issueDate=" + issueDate + ", returnDate=" + returnDate + ", rentalStatus=" + rentalStatus
-				+ ", rentalId=" + rentalId + "]";
+		return "Request [productId=" + productId + ", userId=" + userId + ", quantity=" + quantity + ", issueDate="
+				+ issueDate + ", returnDate=" + returnDate + ", rentalStatus=" + rentalStatus + ", rentalId=" + rentalId
+				+ "]";
 	}
     
 }
